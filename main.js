@@ -30,7 +30,7 @@ function createWindow() {
     // Start Migration first
     migration.up().finally(() => {
         migration.seedInit()
-        mainWindow.loadFile('index.html')
+        mainWindow.loadFile('public/index.html')
         mainWindow.openDevTools()
     });
 }
