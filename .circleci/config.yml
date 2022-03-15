@@ -1,9 +1,13 @@
 version: 2.1
-orbs :
-    node: circleci/node@16.14
-
 workflows:
-  test:
-    jobs:
-      - node/test:
-          test-results-for: jest
+  version: 2
+
+
+jobs: # a collection of steps
+  test: # runs not using Workflows must have a `build` job as entry point
+    docker: # run the steps with Docker
+      - image: node:16-alpine # ...with this image as the primary container; this is where all `steps` will run
+
+    steps: # a set of executable commands
+      - checkout
+      - run: npm run test
