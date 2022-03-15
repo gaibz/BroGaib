@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require("electron")
 const windowStateKeeper = require('electron-window-state');
 const path = require("path")
+const Migration = require("./main/migration")
 
 function createWindow() {
     // Get window state
@@ -16,15 +17,22 @@ function createWindow() {
         height: mainWindowStateKeeper.height,
         title: "BroGaib",
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            devTools : true
         }
     })
+
+    const migration = new Migration(app.getPath('userData') + "/brogaib.db")
 
     // Track Window
     mainWindowStateKeeper.manage(mainWindow)
 
-
-    mainWindow.loadFile('index.html')
+    // Start Migration first
+    migration.up().finally(() => {
+        migration.seedInit()
+        mainWindow.loadFile('index.html')
+        mainWindow.openDevTools()
+    });
 }
 
 /**
