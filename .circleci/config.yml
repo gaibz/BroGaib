@@ -1,7 +1,4 @@
 version: 2.1
-workflows:
-  version: 2
-
 
 jobs: # a collection of steps
   build : # runs not using Workflows must have a `build` job as entry point
@@ -10,4 +7,5 @@ jobs: # a collection of steps
 
     steps: # a set of executable commands
       - checkout
+      - run: npm install
       - run: npm run test
