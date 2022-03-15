@@ -1,0 +1,1 @@
+This is the area of the renderer application
