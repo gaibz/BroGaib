@@ -17,6 +17,7 @@ function createWindow() {
         height: mainWindowStateKeeper.height,
         title: "BroGaib",
         webPreferences: {
+            webviewTag: true,
             preload: path.join(__dirname, 'preload.js'),
             devTools : true
         }
