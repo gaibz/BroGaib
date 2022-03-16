@@ -1,10 +1,41 @@
 <script>
-    export let url = ""
+
+    import {tabs} from "../store";
+
+    let url = ""
+
+    let tablists = []
+
+    let active_tab_index = 0
+
+    tabs.subscribe((tab) => {
+        tablists = tab
+        let active_tab = {}
+        tablists.forEach((tabx, i) => {
+            if(tabx.active) {
+                active_tab_index = i
+                active_tab = tabx
+            }
+        })
+
+        if(active_tab.url) {
+            url = active_tab.url
+        }
+    })
 
 
     $: secure = url.indexOf("https:\/\/") > -1
     $: secure_title = secure ? "Secure" : "Not Secure"
     $: secure_icon = secure ? "lock" : "unlock"
+
+    function load() {
+        tablists[active_tab_index].url = url
+        tabs.set(tablists)
+    }
+
+    function detectInput(e) {
+        if(e.key === 'Enter') load()
+    }
 
 </script>
 
@@ -18,7 +49,7 @@
 </style>
 <div class="ribbon pt-1">
     <div class="input">
-        <input type="text" bind:value={url}>
+        <input type="text" bind:value={url} on:keyup={detectInput}>
         <div class="button-group">
             <button class="button input-clear-button" tabindex="-1" type="button">
                 <span class="default-icon-cross"></span>
